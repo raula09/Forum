@@ -31,7 +31,7 @@ namespace Forum.Models
                 
                 if (_context.Users.Any(u => u.Username == name))
                 {
-                    Console.WriteLine("esername is already taken");
+                    Console.WriteLine("username is already taken");
                     return;
                 }
 

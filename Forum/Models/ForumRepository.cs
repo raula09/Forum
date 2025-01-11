@@ -297,6 +297,29 @@ namespace Forum.Models
                 }
             }
         }
+        public void EditPost(int postId, int userId, string newTitle, string newContent)
+        {
+            try
+            {
+                var post = _context.Posts.FirstOrDefault(p => p.Id == postId && p.UserId == userId);
+                if (post != null)
+                {
+                    post.Title = newTitle;
+                    post.Content = newContent;
+                    _context.SaveChanges();
+                    Console.WriteLine("Post updated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Post not found or you are not the author.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
         public void ViewAllGroups()
         {
             try
@@ -475,7 +498,8 @@ namespace Forum.Models
                 Console.WriteLine("13. view post Comments");
                 Console.WriteLine("14. view all Groups");
                 Console.WriteLine("15. share post to group");
-                Console.WriteLine("16. Logout");
+                Console.WriteLine("16. edit post");
+                Console.WriteLine("17. Logout");
 
                 string choice = Console.ReadLine();
 
@@ -575,6 +599,19 @@ namespace Forum.Models
 
                         break;
                     case "16":
+                        Console.WriteLine("Enter the ID of the post you want to edit:");
+                        var postIdToEdit = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter new post title:");
+                        var newTitle = Console.ReadLine();
+                        Console.WriteLine("Enter new post content:");
+                        var newContent = Console.ReadLine();
+                        EditPost(postIdToEdit, user.Id, newTitle, newContent);
+                        break;
+
+
+
+                        break;
+                    case "17":
                         Console.WriteLine("bye bye");
                         return;
 
