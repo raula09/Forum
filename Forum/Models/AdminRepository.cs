@@ -29,6 +29,7 @@ namespace Forum.Models
                 foreach (var post in posts)
                 {
                     Console.WriteLine($"Post ID: {post.Id}, Title: {post.Title}, Comments: {post.Comments.Count}");
+                    Console.WriteLine("_______________________________________________________________________________");
                 }
             }
             catch (Exception ex)
@@ -76,6 +77,7 @@ namespace Forum.Models
                 foreach (var user in users)
                 {
                     Console.WriteLine($"User ID: {user.Id}, Username: {user.Username}, Comments: {user.Comments.Count}");
+                    Console.WriteLine("_______________________________________________________________________________");
                 }
             }
             catch (Exception ex)
@@ -141,6 +143,7 @@ namespace Forum.Models
                 foreach (var comment in comments)
                 {
                     Console.WriteLine($"{comment.User?.Username} commented on Post {comment.Post?.Title}: {comment.Text} (Posted on {comment.CreatedAt})");
+                    Console.WriteLine("_______________________________________________________________________________");
                 }
             }
             catch (Exception ex)
