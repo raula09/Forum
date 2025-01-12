@@ -638,7 +638,7 @@ namespace Forum.Models
                 Console.WriteLine("6. give user admin role");
                 Console.WriteLine("7. view all users");
                 Console.WriteLine("8. view user posts");
-                Console.WriteLine("8. logout");
+                Console.WriteLine("9. logout");
                
                 string choice = Console.ReadLine();
 
