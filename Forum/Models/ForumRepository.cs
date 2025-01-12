@@ -161,7 +161,32 @@ namespace Forum.Models
                 Console.WriteLine("couldnt find post");
             }
         }
+        public void SearchGroups(string groupName)
+        {
+            try
+            {
+                var groups = _context.Groups
+                                 .Where(p => p.Name.Contains(groupName))
+                                 .ToList();
+                if (groups != null)
+                {
+                    foreach (var group in groups)
+                    {
+                        Console.WriteLine($"Name:{group.Name}; \n Id: {group.Id}");
+                        Console.WriteLine("_________________________________");
+                    }
 
+                }
+                else
+                {
+                    Console.WriteLine("couldnt find any groups");
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"error: {ex.Message}");
+            }
+            
+        }
         public void CreateGroup(string groupName, int userId)
         {
             Group group = new Group
@@ -499,7 +524,8 @@ namespace Forum.Models
                 Console.WriteLine("14. view all Groups");
                 Console.WriteLine("15. share post to group");
                 Console.WriteLine("16. edit post");
-                Console.WriteLine("17. Logout");
+                Console.WriteLine("17. search groups");
+                Console.WriteLine("18. Logout");
 
                 string choice = Console.ReadLine();
 
@@ -534,7 +560,7 @@ namespace Forum.Models
                         break;
 
                     case "6":
-                        Console.WriteLine("Enter the search postName:");
+                        Console.WriteLine("Search");
                         string postName = Console.ReadLine();
                         SearchPosts(postName);
                         break;
@@ -607,11 +633,13 @@ namespace Forum.Models
                         var newContent = Console.ReadLine();
                         EditPost(postIdToEdit, user.Id, newTitle, newContent);
                         break;
-
-
-
-                        break;
                     case "17":
+
+                        Console.WriteLine("Search");
+                        string GroupName = Console.ReadLine();
+                        SearchGroups(GroupName);
+                        break;
+                    case "18":
                         Console.WriteLine("bye bye");
                         return;
 
@@ -638,7 +666,10 @@ namespace Forum.Models
                 Console.WriteLine("6. give user admin role");
                 Console.WriteLine("7. view all users");
                 Console.WriteLine("8. view user posts");
-                Console.WriteLine("9. logout");
+                Console.WriteLine("9. view user comments");
+                Console.WriteLine("10. view all groups");
+                Console.WriteLine("11. search groups");
+                Console.WriteLine("12. logout");
                
                 string choice = Console.ReadLine();
 
@@ -687,6 +718,14 @@ namespace Forum.Models
                         adminRepository.ViewUserComments(commentId);
                         break;
                     case "10":
+                        ViewAllGroups();
+                        break;
+                    case "11":
+                        Console.WriteLine("Search");
+                        string GroupName = Console.ReadLine();
+                        SearchGroups(GroupName);
+                        break;
+                    case "12":
                         Console.WriteLine("Bye bye");
                         return;
 
