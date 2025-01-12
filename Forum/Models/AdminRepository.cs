@@ -1,97 +1,128 @@
 ﻿using Forum.Data;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Forum.Models
 {
     public class AdminRepository
     {
-        private ForumDbContext _context;
+        private readonly ForumDbContext _context;
+
         public AdminRepository(ForumDbContext context)
         {
             _context = context;
         }
-        public void ViewAllPost()
+
+        public void ViewAllPosts()
         {
             try
             {
-                var posts = _context.Posts.ToList();
-                foreach (var item in posts)
+                var posts = _context.Posts.Include(p => p.Comments).ToList();
+
+                if (posts.Count == 0)
                 {
-                    Console.WriteLine(item.Title);
+                    Console.WriteLine("No posts found.");
+                    return;
+                }
+
+                foreach (var post in posts)
+                {
+                    Console.WriteLine($"Post ID: {post.Id}, Title: {post.Title}, Comments: {post.Comments.Count}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"no posts found: {ex.Message}");
+                Console.WriteLine($"Error retrieving posts: {ex.Message}\n{ex.StackTrace}");
             }
         }
-        public void ViewAllUser()
+        public void ViewUserPosts(int userId)
+        {
+            try { 
+                
+                var user = _context.Users.Include(u => u.Posts).FirstOrDefault(p => p.Id == userId);
+
+                if (user == null) 
+                {
+                    Console.WriteLine($"user with {user.Id} doesnt exist ");
+                }
+                if (user.Posts == null) 
+                {
+                    Console.WriteLine($"{user.Username} doesnt have any posts");
+                }
+            foreach (var post in user.Posts) {
+                Console.WriteLine($"{post.Id} \n {post.Title} \n {post.Content} \n {post.CreatedAt} ");
+
+
+            }}
+           
+            catch (Exception ex)
+            {
+                Console.WriteLine($"error: {ex.Message}");
+            }
+        }
+        public void ViewAllUsers()
         {
             try
             {
-                var users = _context.Users.ToList();
-                foreach (var item in users)
+                var users = _context.Users.Include(u => u.Comments).ToList();
+
+                if (users.Count == 0)
                 {
-                    Console.WriteLine($"Id:{item.Id} Username:{item.Username}");
+                    Console.WriteLine("No users found.");
+                    return;
+                }
+
+                foreach (var user in users)
+                {
+                    Console.WriteLine($"User ID: {user.Id}, Username: {user.Username}, Comments: {user.Comments.Count}");
                 }
             }
-            catch (Exception ex) {
-
-                Console.WriteLine($"no users found");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving users: {ex.Message}\n{ex.StackTrace}");
             }
         }
+
         public void RemovePost(int postId)
         {
             try
             {
-                var post = _context.Posts.FirstOrDefault(x => x.Id == postId);
-                if (post != null)
+                var post = _context.Posts.Include(p => p.Comments).FirstOrDefault(x => x.Id == postId);
+                if (post == null)
                 {
-                    
-                    post.GroupId = null;
+                    Console.WriteLine("Post not found.");
+                    return;
+                }
 
-                    _context.Posts.Remove(post);
-                    _context.SaveChanges();
-                    Console.WriteLine("Post removed");
-                }
-                else
-                {
-                    Console.WriteLine("Couldn't find the post");
-                }
+                _context.Posts.Remove(post);
+                _context.SaveChanges();
+                Console.WriteLine("Post removed successfully.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Couldn't remove post: {ex.Message}");
+                Console.WriteLine($"Error removing post: {ex.Message}\n{ex.StackTrace}");
             }
         }
-
 
         public void RemoveUser(int userId)
         {
             try
             {
-                var user = _context.Users.FirstOrDefault(x => x.Id == userId);
-              
-                if (user != null)
+                var user = _context.Users.Include(u => u.Comments).Include(u => u.UserGroups).FirstOrDefault(x => x.Id == userId);
+                if (user == null)
                 {
-                    _context.Users.Remove(user);
-                    _context.SaveChanges();
-                    Console.WriteLine("user removed");
+                    Console.WriteLine("User not found.");
+                    return;
                 }
-                else
-                {
-                    Console.WriteLine("couldnt find user");
-                }
+
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+                Console.WriteLine("User removed successfully.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"couldnt remove user: {ex.Message}");
+                Console.WriteLine($"Error removing user: {ex.Message}\n{ex.StackTrace}");
             }
         }
 
@@ -99,22 +130,22 @@ namespace Forum.Models
         {
             try
             {
-                var comments = _context.Comments.Include(c => c.User).ToList();
-                if (comments.Count > 0)
+                var comments = _context.Comments.Include(c => c.User).Include(c => c.Post).ToList();
+
+                if (comments.Count == 0)
                 {
-                    foreach (var comment in comments)
-                    {
-                        Console.WriteLine($"{comment.User.Username}: \n {comment.Text} \n posted on {comment.CreatedAt}");
-                    }
+                    Console.WriteLine("No comments found.");
+                    return;
                 }
-                else
+
+                foreach (var comment in comments)
                 {
-                    Console.WriteLine("no comments");
+                    Console.WriteLine($"{comment.User?.Username} commented on Post {comment.Post?.Title}: {comment.Text} (Posted on {comment.CreatedAt})");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"couldnt get all comments: {ex.Message}");
+                Console.WriteLine($"Error retrieving comments: {ex.Message}\n{ex.StackTrace}");
             }
         }
 
@@ -122,21 +153,20 @@ namespace Forum.Models
         {
             try
             {
-                var group = _context.Groups.FirstOrDefault(x => x.Id == groupId);
-                if (group != null)
+                var group = _context.Groups.Include(g => g.GroupComments).FirstOrDefault(x => x.Id == groupId);
+                if (group == null)
                 {
-                    _context.Groups.Remove(group);
-                    _context.SaveChanges();
-                    Console.WriteLine("group removed");
+                    Console.WriteLine("Group not found.");
+                    return;
                 }
-                else
-                {
-                    Console.WriteLine("couldnt find group");
-                }
+
+                _context.Groups.Remove(group);
+                _context.SaveChanges();
+                Console.WriteLine("Group removed successfully.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"couldnt remove group: {ex.Message}");
+                Console.WriteLine($"Error removing group: {ex.Message}\n{ex.StackTrace}");
             }
         }
 
@@ -145,23 +175,20 @@ namespace Forum.Models
             try
             {
                 var user = _context.Users.FirstOrDefault(x => x.Id == userId);
-                if (user != null)
+                if (user == null)
                 {
-                    user.Role = "Admin";
-                    _context.SaveChanges();
-                    Console.WriteLine($"{user.Username} is now admin");
+                    Console.WriteLine("User not found.");
+                    return;
                 }
-                else
-                {
-                    Console.WriteLine("user not found");
-                }
+
+                user.Role = "Admin";
+                _context.SaveChanges();
+                Console.WriteLine($"User {user.Username} is now an Admin.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"error: {ex.Message}");
+                Console.WriteLine($"Error updating user role: {ex.Message}\n{ex.StackTrace}");
             }
         }
-
     }
 }
-

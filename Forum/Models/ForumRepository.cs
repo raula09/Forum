@@ -637,6 +637,7 @@ namespace Forum.Models
                 Console.WriteLine("5. remove group");
                 Console.WriteLine("6. give user admin role");
                 Console.WriteLine("7. view all users");
+                Console.WriteLine("8. view user posts");
                 Console.WriteLine("8. logout");
                
                 string choice = Console.ReadLine();
@@ -644,7 +645,7 @@ namespace Forum.Models
                 switch (choice)
                 {
                     case "1":
-                        adminRepository.ViewAllPost();
+                        ViewAllPost();
                         break;
 
                     case "2":
@@ -672,9 +673,14 @@ namespace Forum.Models
                         adminRepository.GiveUserAdminRole(userId);
                         break;
                     case "7":
-                        adminRepository.ViewAllPost();
+                        adminRepository.ViewAllUsers();
                         break;
                     case "8":
+                        Console.WriteLine("enter user id");
+                        int userId = int.Parse(Console.ReadLine());
+                        adminRepository.ViewUserPosts(userId);
+                        break;
+                    case "9":
                         Console.WriteLine("Bye bye");
                         return;
 
