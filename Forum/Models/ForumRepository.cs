@@ -681,7 +681,12 @@ namespace Forum.Models
                         adminRepository.ViewUserPosts(userId3);
 
                         break;
-                    case "9":
+                        case "9":
+                        Console.WriteLine("enter user ID");
+                        int commentId = int.Parse(Console.ReadLine());
+                        adminRepository.ViewUserComments(commentId);
+                        break;
+                    case "10":
                         Console.WriteLine("Bye bye");
                         return;
 

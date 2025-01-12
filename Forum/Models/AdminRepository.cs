@@ -53,14 +53,41 @@ namespace Forum.Models
                 }
             foreach (var post in user.Posts) {
                 Console.WriteLine($"{post.Id} \n {post.Title} \n {post.Content} \n {post.CreatedAt} ");
+                    Console.WriteLine("_______________________________________________________________________________");
 
-
-            }}
+                }
+            }
            
             catch (Exception ex)
             {
                 Console.WriteLine($"error: {ex.Message}");
             }
+        }
+        public void ViewUserComments(int userId) 
+        {
+            try
+            {
+                var user = _context.Users.Include(u =>u.Comments).FirstOrDefault(p => p.Id == userId);
+                if (user == null) 
+                {
+                    Console.WriteLine($"user with {user.Id} doesnt exist");
+
+                }
+                if(user.Comments == null)
+                {
+                    Console.WriteLine($"{user.Username} doesnt have any Comments posted");
+                }
+                foreach (var comment in user.Comments)
+                {
+                    Console.WriteLine($"{comment.Id} \n {comment.Text} \n {comment.CreatedAt}");
+                    Console.WriteLine("_______________________________________________________________________________");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"error: {ex.Message}");
+            }
+
         }
         public void ViewAllUsers()
         {
