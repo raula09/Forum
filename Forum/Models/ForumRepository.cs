@@ -692,41 +692,46 @@ namespace Forum.Models
                         adminRepository.RemoveUser(userId);
                         break;
                         case "4":
-                        adminRepository.ViewAllComments();
+                        Console.WriteLine("enter comment id to remove");
+                        var commentId = int.Parse(Console.ReadLine());
+                        adminRepository.RemoveComment(commentId);
                         break;
                         case "5":
+                        adminRepository.ViewAllComments();
+                        break;
+                        case "6":
                         Console.WriteLine("enter group id to remove");
                          var groupId = int.Parse(Console.ReadLine());
                         adminRepository.RemoveGroup(groupId);
                         break;
-                        case "6":
+                        case "7":
                         Console.WriteLine("enter user id to grand admin role");
                         userId = int.Parse(Console.ReadLine());
                         adminRepository.GiveUserAdminRole(userId);
                         break;
-                    case "7":
+                    case "8":
                         adminRepository.ViewAllUsers();
                         break;
-                    case "8":
+                    case "9":
                         Console.WriteLine("Enter user ID:");
                         int userId3 = int.Parse(Console.ReadLine());
                         adminRepository.ViewUserPosts(userId3);
 
                         break;
-                        case "9":
+                        case "10":
                         Console.WriteLine("enter user ID");
                         int commentId = int.Parse(Console.ReadLine());
                         adminRepository.ViewUserComments(commentId);
                         break;
-                    case "10":
+                    case "11":
                         ViewAllGroups();
                         break;
-                    case "11":
+                    case "12":
                         Console.WriteLine("Search");
                         string GroupName = Console.ReadLine();
                         SearchGroups(GroupName);
                         break;
-                    case "12":
+                    case "13":
                         Console.WriteLine("Bye bye");
                         return;
 
