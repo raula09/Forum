@@ -661,15 +661,16 @@ namespace Forum.Models
                 Console.WriteLine("1. view all Posts");
                 Console.WriteLine("2. remove Post");
                 Console.WriteLine("3. remove user");
-                Console.WriteLine("4. view all comments");
-                Console.WriteLine("5. remove group");
-                Console.WriteLine("6. give user admin role");
-                Console.WriteLine("7. view all users");
-                Console.WriteLine("8. view user posts");
-                Console.WriteLine("9. view user comments");
-                Console.WriteLine("10. view all groups");
-                Console.WriteLine("11. search groups");
-                Console.WriteLine("12. logout");
+                Console.WriteLine("4. remove comment");
+                Console.WriteLine("5. view all comments");
+                Console.WriteLine("6. remove group");
+                Console.WriteLine("7. give user admin role");
+                Console.WriteLine("8. view all users");
+                Console.WriteLine("9. view user posts");
+                Console.WriteLine("10. view user comments");
+                Console.WriteLine("11. view all groups");
+                Console.WriteLine("12. search groups");
+                Console.WriteLine("13. logout");
                
                 string choice = Console.ReadLine();
 
