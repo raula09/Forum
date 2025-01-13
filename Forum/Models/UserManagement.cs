@@ -59,7 +59,7 @@ namespace Forum.Models
             }
             catch (Exception ex)
             {
-         
+                Console.WriteLine($"error: {ex.Message}");
             }
         }
 

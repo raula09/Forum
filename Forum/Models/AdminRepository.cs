@@ -133,6 +133,26 @@ namespace Forum.Models
                 Console.WriteLine($"Error removing post: {ex.Message}\n{ex.StackTrace}");
             }
         }
+        public void RemoveComment(int commentId)
+        {
+            try 
+            { 
+             var comment = _context.Comments.FirstOrDefault(x => x.Id == commentId);
+                if(comment == null)
+                {
+                    Console.WriteLine("comment not found");
+                    return;
+                }
+                _context.Comments.Remove(comment);
+                _context.SaveChanges();
+                Console.WriteLine("comment removed succesfully");
+            
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine($"error: {ex.Message}");
+            }
+            }
 
         public void RemoveUser(int userId)
         {
@@ -220,5 +240,6 @@ namespace Forum.Models
                 Console.WriteLine($"Error updating user role: {ex.Message}\n{ex.StackTrace}");
             }
         }
+
     }
 }
