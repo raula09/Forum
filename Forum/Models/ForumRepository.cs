@@ -693,8 +693,8 @@ namespace Forum.Models
                         break;
                         case "4":
                         Console.WriteLine("enter comment id to remove");
-                        var commentId = int.Parse(Console.ReadLine());
-                        adminRepository.RemoveComment(commentId);
+                        var commentId2 = int.Parse(Console.ReadLine());
+                        adminRepository.RemoveComment(commentId2);
                         break;
                         case "5":
                         adminRepository.ViewAllComments();
