@@ -1,4 +1,4 @@
-﻿using Forum.Data;
+using Forum.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace Forum.Models
         {
             _context = context;
         }
-
+// hello from mobile
         public void ViewAllPosts()
         {
             try
